@@ -42,7 +42,12 @@ export class ConteudoPage {
     const row = this.page.getByRole('row').filter({ hasText: nome }).first();
     await row.waitFor({ state: 'visible', timeout: 15000 });
     await row.getByRole('button', { name: 'Excluir', exact: true }).click();
-    await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+    const modal = this.page.getByLabel('Confirmar Exclusão');
+    await modal.waitFor({ state: 'visible' });
+    await modal.getByRole('button', { name: 'Excluir' }).click();
+    await modal.waitFor({ state: 'hidden' });
+
     await this.page.waitForLoadState('networkidle');
   }
 }

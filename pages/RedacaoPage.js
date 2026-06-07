@@ -81,12 +81,16 @@ export class RedacaoPage {
 
         if (textos && textos.length > 0) {
             for (const { conteudo, novoConteudo } of textos) {
-                await this.page.getByText(conteudo).click();
-                await this.page.getByText(conteudo).fill(novoConteudo);
+                const textarea = this.page.getByRole('textbox').filter({ hasText: conteudo });
+                await textarea.clear();
+                await textarea.fill(novoConteudo);
             }
         }
 
         await this.page.getByRole('button', { name: 'Atualizar Redação' }).click();
+        await this.page.waitForResponse(res =>
+            res.url().includes('/redacao') && res.status() === 200
+        );
         await this.page.waitForLoadState('networkidle');
 
         if (tituloNovo !== undefined) {
@@ -97,7 +101,12 @@ export class RedacaoPage {
     async excluir() {
         await this.#abrirMenu(this._tituloAtual);
         await this.page.getByText('Excluir').click();
-        await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+        const modal = this.page.getByRole('dialog');
+        await modal.waitFor({ state: 'visible' });
+        await modal.getByRole('button', { name: 'Excluir' }).click();
+        await modal.waitFor({ state: 'hidden' });
+
         await this.page.waitForLoadState('networkidle');
     }
 }

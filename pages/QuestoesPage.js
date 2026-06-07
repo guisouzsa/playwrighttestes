@@ -78,15 +78,21 @@ export class QuestoesPage {
     async editarUltima({ banca, enunciado, a, b, c, d, e }) {
         await this.page.getByRole('button', { name: 'Opções' }).first().click();
         await this.page.getByRole('menuitem', { name: 'Editar Questão' }).click();
+        await this.page.waitForLoadState('networkidle');
+
         if (banca) await this.inputBanca.fill(banca);
         if (enunciado) {
             await this.page.getByRole('group', { name: 'Enunciado' }).getByRole('textbox').fill(enunciado);
         }
-        if (a) await this.page.getByLabel('Detalhes adicionais').getByText(a.replace(' (editado)', '')).fill(a);
-        if (b) await this.page.getByLabel('Detalhes adicionais').getByText(b.replace(' (editado)', '')).fill(b);
-        if (c) await this.page.getByLabel('Detalhes adicionais').getByText(c.replace(' (editado)', '')).fill(c);
-        if (d) await this.page.getByLabel('Detalhes adicionais').getByText(d.replace(' (editado)', '')).fill(d);
-        if (e) await this.page.getByLabel('Detalhes adicionais').getByText(e.replace(' (editado)', '')).fill(e);
+
+        const detalhes = this.page.getByLabel('Detalhes adicionais');
+        const alternativas = detalhes.getByRole('textbox');
+        if (a) await alternativas.nth(0).fill(a);
+        if (b) await alternativas.nth(1).fill(b);
+        if (c) await alternativas.nth(2).fill(c);
+        if (d) await alternativas.nth(3).fill(d);
+        if (e) await alternativas.nth(4).fill(e);
+
         await this.btnSalvar.click();
         await this.page.waitForLoadState('networkidle');
     }
@@ -94,7 +100,12 @@ export class QuestoesPage {
     async excluirUltima() {
         await this.page.getByRole('button', { name: 'Opções' }).first().click();
         await this.page.getByRole('menuitem', { name: 'Excluir Questão' }).click();
-        await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+        const modal = this.page.getByRole('dialog');
+        await modal.waitFor({ state: 'visible' });
+        await modal.getByRole('button', { name: 'Excluir' }).click();
+        await modal.waitFor({ state: 'hidden' });
+
         await this.page.waitForLoadState('networkidle');
     }
 
@@ -110,7 +121,12 @@ export class QuestoesPage {
         const row = this.page.getByRole('row').filter({ hasText: nome }).first();
         await row.waitFor({ state: 'visible', timeout: 15000 });
         await row.getByRole('button', { name: 'Excluir', exact: true }).click();
-        await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+        const modal = this.page.getByRole('dialog');
+        await modal.waitFor({ state: 'visible' });
+        await modal.getByRole('button', { name: 'Excluir' }).click();
+        await modal.waitFor({ state: 'hidden' });
+
         await this.page.waitForLoadState('networkidle');
     }
 }

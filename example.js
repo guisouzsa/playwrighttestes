@@ -8,6 +8,9 @@
 // Rodar vendo o browser, 1 por vez, com detalhes no terminal
 // npm run test:headed
 
+//npx playwright test tests/redacao/redacao.happy.spec.js
+//roda o teste especificado apenas no chromium(config foi especificado que deve rodar apenas no chromium)
+
 // Rodar com debug (abre Playwright Inspector, pausa em cada ação)
 // npm run test:debug
 
