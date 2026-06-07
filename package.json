@@ -1,0 +1,25 @@
+{
+    "name": "meus-testes",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "scripts": {
+        "test": "playwright test --project=chromium",
+        "test:headed": "playwright test --project=chromium --headed --workers=1 --reporter=list",
+        "test:debug": "playwright test --project=chromium --headed --workers=1 --reporter=list --debug"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.59.1",
+        "@types/node": "^25.6.0"
+    },
+    "dependencies": {
+        "chromium": "^3.0.3",
+        "dotenv": "^16.6.1",
+        "otplib": "^13.4.0",
+        "totp-generator": "^2.0.1"
+    }
+}
