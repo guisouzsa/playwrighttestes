@@ -1,0 +1,15 @@
+{
+  "cookies": [
+    {
+      "name": "auth_token",
+      "value": "eyJpdiI6IlVjSm5OS2oyL05XWFhBaERncytUVUE9PSIsInZhbHVlIjoiNVZ3M25HZkdPbnlRdUhqcjVFY3JmTjdOaDdxMzdvclU5eVhWWEpPQ1d6THVZN0ZJaHBTY00rNDFHVGU5SGRJVHdpY1dvWGNpOGxLUEo0eE1GcWdhdFE9PSIsIm1hYyI6ImI0OTFhZmQzOGNkZjgyNDMwN2IzMTc3MmQ4MWJiMzJhY2I1YmQwODBkY2U5NTBmYjUzNzhkNGIzMWRlZDk1ZTUiLCJ0YWciOiIifQ%3D%3D",
+      "domain": ".avaliei.com.br",
+      "path": "/",
+      "expires": 1780958403.758973,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": []
+}
