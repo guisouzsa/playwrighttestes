@@ -27,8 +27,8 @@ export class QuestoesPage {
         await this.page.getByRole('combobox', { name: 'Conteúdos' }).click();
         const input = this.page.getByPlaceholder('Buscar conteúdos...');
         await input.waitFor({ state: 'visible' });
-        await input.fill('g');
-        await this.page.getByRole('option', { name: nome }).click();
+        await input.fill(nome);
+        await this.page.getByRole('option', { name: nome, exact: true }).click();
     }
 
     async criarConteudo(nome, disciplina) {
@@ -100,14 +100,15 @@ export class QuestoesPage {
 
     async excluirConteudoNaPagina(nome) {
         await this.page.goto('https://app.avaliei.com.br/conteudos');
-        await this.page.getByLabel('Disciplina').click();
-        await this.page.getByRole('checkbox', { name: 'Física', exact: true }).click();
-        await this.page.keyboard.press('Escape');
+        const search = this.page.getByRole('textbox', { name: 'Pesquisar conteúdo...' });
+        await search.waitFor({ state: 'visible' });
+        await search.fill(nome);
+        await search.press('Enter');
         await this.page.waitForLoadState('networkidle');
-        await this.page.getByRole('combobox').click();
-        await this.page.getByRole('option', { name: '100' }).click();
-        await this.page.waitForLoadState('networkidle');
-        const row = this.page.getByRole('row').filter({ hasText: nome }).first();
+        await this.page.waitForTimeout(1000);
+        const row = this.page.getByRole('row').filter({
+            has: this.page.getByRole('cell', { name: nome, exact: true })
+        }).first();
         await row.waitFor({ state: 'visible', timeout: 15000 });
         await row.getByRole('button', { name: 'Excluir', exact: true }).click();
         await this.page.getByRole('button', { name: 'Excluir' }).click();
