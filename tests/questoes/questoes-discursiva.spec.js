@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { QuestoesPage } from '../../pages/QuestoesPage.js';
 
-const CONTEUDO = `g-discursiva-importa-manual-teste-associação-resistores-${Date.now()}`;
+const CONTEUDO = 'g-discursiva-importa-manual-teste-associação-resistores';
+
 const ENUNCIADO = 'Em um laboratório de eletrônica de uma faculdade, três resistores são associados em série em um circuito elétrico. Os valores das resistências são 10 Ω, 20 Ω e 30 Ω. Explique como determinar a resistência equivalente desse circuito e descreva a diferença entre associações em série e em paralelo, destacando aplicações práticas de cada uma.';
 
 test('Questão Discursiva — criar, editar e excluir', async ({ page }) => {
@@ -19,7 +20,9 @@ test('Questão Discursiva — criar, editar e excluir', async ({ page }) => {
     });
 
     await expect(
-        page.getByRole('row').filter({ hasText: CONTEUDO }).getByText(ENUNCIADO.substring(0, 50))
+        page.getByRole('row')
+            .filter({ hasText: CONTEUDO })
+            .getByText(ENUNCIADO.substring(0, 50))
     ).toBeVisible();
 
     await questoes.editarUltima({
@@ -27,7 +30,9 @@ test('Questão Discursiva — criar, editar e excluir', async ({ page }) => {
     });
 
     await expect(
-        page.getByRole('row').filter({ hasText: CONTEUDO }).getByText('(editada)')
+        page.getByRole('row')
+            .filter({ hasText: CONTEUDO })
+            .getByText('(editada)')
     ).toBeVisible();
 
     await questoes.excluirUltima();
