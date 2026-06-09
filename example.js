@@ -1,3 +1,95 @@
+// PS C:\Users\gui\playavaliei\meus-testes> npx playwright test
+
+// Running 35 tests using 1 worker
+//   1) [chromium] › tests\questoes\questoes-discursiva.spec.js:7:1 › Questão Discursiva — criar, editar e excluir 
+
+//     Test timeout of 300000ms exceeded.
+
+//     Error: locator.click: Test timeout of 300000ms exceeded.
+//     Call log:
+//       - waiting for getByRole('button', { name: 'Voltar' })
+
+
+//        at ..\pages\QuestoesPage.js:40
+
+//       38 |         await this.page.getByRole('option', { name: disciplina, exact: true }).click();
+//       39 |         await this.btnSalvar.click();
+//     > 40 |         await this.page.getByRole('button', { name: 'Voltar' }).click();
+//          |                                                                 ^
+//       41 |     }
+//       42 |
+//       43 |     async criarQuestaoDiscursiva({ banca, ano, nivel, disciplina, conteudo, enunciado }) {
+//         at QuestoesPage.criarConteudo (C:\Users\gui\playavaliei\meus-testes\pages\QuestoesPage.js:40:65)
+//         at QuestoesPage.criarQuestaoDiscursiva (C:\Users\gui\playavaliei\meus-testes\pages\QuestoesPage.js:46:9)
+//         at C:\Users\gui\playavaliei\meus-testes\tests\questoes\questoes-discursiva.spec.js:12:5
+
+//     Error Context: test-results\questoes-questoes-discursi-75171-va-—-criar-editar-e-excluir-chromium\error-context.md
+
+//   2) [chromium] › tests\questoes\questoes-manual.happy.spec.js:8:1 › Questão Manual — criar, editar e excluir 
+
+//     Test timeout of 300000ms exceeded.
+
+//     Error: locator.click: Test timeout of 300000ms exceeded.
+//     Call log:
+//       - waiting for getByRole('row').filter({ hasText: 'g-discursiva-importa-manual-teste-associação-resistores' }).first().getByRole('button', { name: 'Excluir', exact: true })
+
+
+//        at ..\pages\QuestoesPage.js:123
+
+//       121 |         const row = this.page.getByRole('row').filter({ hasText: nome }).first();
+//       122 |         await row.waitFor({ state: 'visible', timeout: 15000 });
+//     > 123 |         await row.getByRole('button', { name: 'Excluir', exact: true }).click();
+//           |                                                                         ^
+//       124 |
+//       125 |         const modal = this.page.getByRole('dialog');
+//       126 |         await modal.waitFor({ state: 'visible' });
+//         at QuestoesPage.excluirConteudoNaPagina (C:\Users\gui\playavaliei\meus-testes\pages\QuestoesPage.js:123:73)
+//         at C:\Users\gui\playavaliei\meus-testes\tests\questoes\questoes-manual.happy.spec.js:51:5
+
+//     Error Context: test-results\questoes-questoes-manual.h-c683a-al-—-criar-editar-e-excluir-chromium\error-context.md
+
+//   3) [chromium] › tests\redacao\redacao.happy.spec.js:13:1 › CRUD de Redação 
+
+//     Test timeout of 300000ms exceeded.
+
+//     Error: locator.click: Test timeout of 300000ms exceeded.
+//     Call log:
+//       - waiting for getByRole('option').filter({ hasText: '106' }).first()
+
+
+//        at ..\pages\GrupoCorretoresPage.js:40
+
+//       38 |         const numero = this.#extrairNumeroCorretor(corretor);
+//       39 |         await this.page.getByPlaceholder('Buscar...').fill(numero);
+//     > 40 |         await this.page.getByRole('option').filter({ hasText: numero }).first().click();
+//          |                                                                                 ^
+//       41 |
+//       42 |         await this.btnSalvar.click();
+//       43 |         await this.page.waitForLoadState('networkidle');
+//         at GrupoCorretoresPage.criar (C:\Users\gui\playavaliei\meus-testes\pages\GrupoCorretoresPage.js:40:81)
+//         at C:\Users\gui\playavaliei\meus-testes\tests\redacao\redacao.happy.spec.js:20:3
+
+//     Error Context: test-results\redacao-redacao.happy-CRUD-de-Redação-chromium\error-context.md
+
+//   Slow test file: [chromium] › tests\turmas\turmas.edge.spec.js (5.4m)
+//   Slow test file: [chromium] › tests\redacao\redacao.happy.spec.js (5.1m)  Slow test file: [chromium] › tests\questoes\questoes-discursiva.spec.js (5.0m)
+//   Slow test file: [chromium] › tests\questoes\questoes-manual.happy.spec.js (5.0m)
+//   Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+//   3 failed
+//     [chromium] › tests\questoes\questoes-discursiva.spec.js:7:1 › Questão Discursiva — criar, editar e excluir 
+//     [chromium] › tests\questoes\questoes-manual.happy.spec.js:8:1 › Questão Manual — criar, editar e excluir 
+//     [chromium] › tests\redacao\redacao.happy.spec.js:13:1 › CRUD de Redação 
+//   32 passed (43.4m)
+
+//   Serving HTML report at http://localhost:9323. Press Ctrl+C to quit.
+
+
+
+
+
+
+
+
 // =============================================================================
 // COMANDOS PLAYWRIGHT
 // =============================================================================

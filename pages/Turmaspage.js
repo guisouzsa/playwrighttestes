@@ -35,20 +35,28 @@ export class TurmasPage {
     await opcao.click();
   }
 
+  async #selecionarSerie(serie) {
+    await this.selectSerie.waitFor({ state: 'visible', timeout: 15000 });
+    await expect(this.selectSerie).not.toBeDisabled({ timeout: 15000 });
+    await this.selectSerie.click();
+    await this.page.getByRole('option').filter({ hasText: serie }).first().click();
+  }
+
+  async #selecionarTurno(turno) {
+    await this.selectTurno.waitFor({ state: 'visible', timeout: 15000 });
+    await expect(this.selectTurno).not.toBeDisabled({ timeout: 15000 });
+    await this.selectTurno.click();
+    await this.page.getByRole('option').filter({ hasText: turno }).first().click();
+  }
+
   async criar({ curso, ano, serie, turno, sala, descricao }) {
     this._descricaoAtual = descricao;
 
     await this.btnAdicionarTurma.click();
     if (curso) await this.selecionarCurso(curso);
     await this.inputAno.fill(ano);
-    if (serie) {
-      await this.selectSerie.click();
-      await this.page.getByRole('option').filter({ hasText: serie }).first().click();
-    }
-    if (turno) {
-      await this.selectTurno.click();
-      await this.page.getByRole('option').filter({ hasText: turno }).first().click();
-    }
+    if (serie) await this.#selecionarSerie(serie);
+    if (turno) await this.#selecionarTurno(turno);
     if (sala) await this.inputSala.fill(sala);
     if (descricao) await this.inputDescricao.fill(descricao);
     await this.btnSalvar.click();
@@ -65,14 +73,8 @@ export class TurmasPage {
     await this.#abrirMenu(this._descricaoAtual);
     await this.menuItemEditar.click({ force: true });
     if (ano) await this.inputAno.fill(ano);
-    if (serie) {
-      await this.selectSerie.click();
-      await this.page.getByRole('option').filter({ hasText: serie }).first().click();
-    }
-    if (turno) {
-      await this.selectTurno.click();
-      await this.page.getByRole('option').filter({ hasText: turno }).first().click();
-    }
+    if (serie) await this.#selecionarSerie(serie);
+    if (turno) await this.#selecionarTurno(turno);
     if (sala) await this.inputSala.fill(sala);
     if (descricao) {
       await this.inputDescricao.fill(descricao);
@@ -85,7 +87,12 @@ export class TurmasPage {
   async excluir() {
     await this.#abrirMenu(this._descricaoAtual);
     await this.menuItemExcluir.click({ force: true });
-    await this.page.getByRole('button', { name: 'Excluir' }).click();
+
+    const modal = this.page.getByLabel('Confirmar Exclusão');
+    await modal.waitFor({ state: 'visible', timeout: 15000 });
+    await modal.getByRole('button', { name: 'Excluir' }).click();
+    await modal.waitFor({ state: 'hidden', timeout: 15000 });
+
     await this.page.waitForLoadState('networkidle');
   }
 }

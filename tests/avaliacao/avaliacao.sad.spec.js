@@ -26,17 +26,21 @@ test('Sad — avaliação sem turma selecionada', async ({ page }) => {
   await page.getByRole('combobox', { name: 'Selecionar disciplina para' }).click();
   await page.getByLabel('Filosofia').getByText('Filosofia').click();
   await avaliacao.btnSalvar.click();
-  await expect(page.getByText(ERRO_TURMA)).toBeVisible();
+  await expect(page.getByText(ERRO_TURMA)).toBeVisible({ timeout: 15000 });
 
   await page.locator('div').filter({ hasText: /^Selecionar turmas$/ }).nth(2).click();
   await page.getByRole('option', { name: TURMA }).click();
   await page.keyboard.press('Escape');
   await avaliacao.btnSalvar.click();
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 
   await avaliacao.pesquisar(DESCRICAO);
-  await expect(page.getByText(DESCRICAO)).toBeVisible();
+  await expect(
+    page.getByText(DESCRICAO, { exact: true })
+  ).toBeVisible({ timeout: 15000 });
 
   await avaliacao.excluir(DESCRICAO);
-  await expect(page.getByText(DESCRICAO)).not.toBeVisible();
+  await expect(
+    page.getByRole('row').filter({ hasText: DESCRICAO })
+  ).not.toBeVisible({ timeout: 15000 });
 });

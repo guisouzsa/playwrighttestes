@@ -1,3 +1,4 @@
+import { expect } from '@playwright/test';
 import { MenuPage } from './MenuPage.js';
 
 export class AvaliacaoPage {
@@ -22,12 +23,11 @@ export class AvaliacaoPage {
   async pesquisar(nome) {
     await this.inputBuscar.fill(nome);
     await this.btnAplicar.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async #abrirMenu(nome) {
     await this.pesquisar(nome);
-    await this.page.waitForLoadState('networkidle');
     await this.page
       .getByRole('button', { name: 'Mais Ações' })
       .first()
@@ -59,7 +59,10 @@ export class AvaliacaoPage {
     await this.page.getByRole('combobox', { name: 'Blocos objetivos:' }).click();
     await this.page.getByRole('option', { name: '1', exact: true }).click();
 
-    await this.page.getByRole('combobox', { name: 'Áreas' }).click();
+    const comboAreasObj = this.page.getByRole('combobox', { name: 'Áreas' });
+    await comboAreasObj.waitFor({ state: 'visible', timeout: 30000 });
+    await expect(comboAreasObj).not.toBeDisabled({ timeout: 15000 });
+    await comboAreasObj.click();
     await this.page.getByRole('option', { name: 'Ciências humanas e suas' }).click();
 
     await this.page.getByRole('button', { name: 'Professor' }).click();
@@ -96,7 +99,10 @@ export class AvaliacaoPage {
     await this.page.getByRole('combobox', { name: 'Blocos objetivos:' }).click();
     await this.page.getByRole('option', { name: '0', exact: true }).click();
 
-    await this.page.getByRole('combobox', { name: 'Áreas' }).click();
+    const comboAreasDisc = this.page.getByRole('combobox', { name: 'Áreas' });
+    await comboAreasDisc.waitFor({ state: 'visible', timeout: 30000 });
+    await expect(comboAreasDisc).not.toBeDisabled({ timeout: 15000 });
+    await comboAreasDisc.click();
     await this.page.getByPlaceholder('Buscar...').fill('h');
     await this.page.getByRole('option', { name: 'Ciências humanas e suas' }).click();
 
@@ -113,7 +119,8 @@ export class AvaliacaoPage {
     await this.btnCriarAvaliacao.click();
     await this.#preencherFormularioObjetivo({ descricao, turma, data });
     await this.btnSalvar.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.pesquisar(descricao);
   }
 
   async criarDiscursiva({ descricao, turma, data }) {
@@ -121,14 +128,15 @@ export class AvaliacaoPage {
     await this.btnCriarAvaliacao.click();
     await this.#preencherFormularioDiscursivo({ descricao, turma, data });
     await this.btnSalvar.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.pesquisar(descricao);
   }
 
   async editar(nomeAtual, nomeNovo, novaData) {
     await this.menu.irParaAvaliacoes();
     await this.#abrirMenu(nomeAtual);
     await this.page.getByRole('menuitem', { name: 'Editar' }).click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
     await this.inputDescricao.clear();
     await this.inputDescricao.fill(nomeNovo);
     if (novaData) {
@@ -136,14 +144,21 @@ export class AvaliacaoPage {
       await this.inputData.fill(novaData);
     }
     await this.page.getByRole('button', { name: 'Salvar Alterações' }).click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async excluir(nome) {
     await this.menu.irParaAvaliacoes();
     await this.#abrirMenu(nome);
     await this.page.getByRole('menuitem', { name: 'Excluir' }).click();
-    await this.page.getByRole('button', { name: 'Excluir' }).click();
-    await this.page.waitForLoadState('networkidle');
+
+    const modal = this.page.getByLabel('Confirmar Exclusão');
+    await modal.waitFor({ state: 'visible', timeout: 15000 });
+    await modal.getByRole('button', { name: 'Excluir' }).click();
+    await modal.waitFor({ state: 'hidden', timeout: 15000 });
+
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.btnLimpar.click();
+    await this.page.waitForLoadState('domcontentloaded');
   }
 }

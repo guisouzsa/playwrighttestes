@@ -1,4 +1,4 @@
-// @ts-check
+// playwright.config.js
 import { defineConfig, devices } from '@playwright/test';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,23 +13,27 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: 1,
   reporter: 'html',
-  timeout: 300000,
+  timeout: 60000,
 
   use: {
+    baseURL: 'https://app.avaliei.com.br',
+    navigationTimeout: 30000,
     trace: 'on-first-retry',
     launchOptions: {
-      slowMo: 1000,
+      slowMo: 0,
     },
+    expect: { timeout: 15000 },
   },
 
   projects: [
     {
       name: 'setup',
       testMatch: '**/auth/auth.setup.js',
+      timeout: 120000,
     },
     {
       name: 'chromium',
-      testMatch: '**/*.spec.js',
+      testMatch: '**/tests/**/*.spec.js',
       use: { ...devices['Desktop Chrome'], storageState: AUTH_FILE },
       dependencies: ['setup'],
     },

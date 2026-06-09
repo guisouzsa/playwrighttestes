@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 export class ConteudoPage {
   constructor(page) {
     this.page = page;
@@ -5,6 +7,7 @@ export class ConteudoPage {
     this.inputNome = page.getByRole('textbox', { name: 'Nome do conteúdo: *' });
     this.btnDisciplina = page.getByRole('button', { name: 'Disciplina' });
     this.btnSalvar = page.getByRole('button', { name: 'Salvar' });
+    this.inputPesquisa = page.getByPlaceholder('Pesquisar conteúdo...');
   }
 
   async criar(nome, disciplina) {
@@ -18,11 +21,9 @@ export class ConteudoPage {
   }
 
   async pesquisar(nome) {
-    const input = this.page.getByPlaceholder('Pesquisar conteúdo...');
-    await input.clear();
-    await input.fill(nome);
-    await this.page.waitForTimeout(1500);
-    await this.page.waitForLoadState('networkidle');
+    await this.inputPesquisa.clear();
+    await this.inputPesquisa.fill(nome);
+    await this.page.waitForLoadState('networkidle'); // 👈 reativo, sem waitForTimeout fixo
   }
 
   async editar(nomeAtual, nomeNovo) {
@@ -44,10 +45,11 @@ export class ConteudoPage {
     await row.getByRole('button', { name: 'Excluir', exact: true }).click();
 
     const modal = this.page.getByLabel('Confirmar Exclusão');
-    await modal.waitFor({ state: 'visible' });
+    await modal.waitFor({ state: 'visible', timeout: 15000 });
     await modal.getByRole('button', { name: 'Excluir' }).click();
-    await modal.waitFor({ state: 'hidden' });
+    await modal.waitFor({ state: 'hidden', timeout: 15000 });
 
     await this.page.waitForLoadState('networkidle');
+    await this.inputPesquisa.clear(); // 👈 limpa busca após excluir
   }
 }

@@ -28,15 +28,19 @@ test('Edge — avaliação com data no passado', async ({ page }) => {
   await page.getByRole('combobox', { name: 'Selecionar disciplina para' }).click();
   await page.getByRole('option', { name: 'Filosofia' }).click();
   await avaliacao.btnSalvar.click();
-  await expect(page.getByText(ERRO_DATA)).toBeVisible();
+  await expect(page.getByText(ERRO_DATA)).toBeVisible({ timeout: 15000 });
 
   await avaliacao.inputData.fill(DATA_VALIDA);
   await avaliacao.btnSalvar.click();
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState('domcontentloaded');
 
   await avaliacao.pesquisar(DESCRICAO);
-  await expect(page.getByText(DESCRICAO)).toBeVisible();
+  await expect(
+    page.getByText(DESCRICAO, { exact: true })
+  ).toBeVisible({ timeout: 15000 });
 
   await avaliacao.excluir(DESCRICAO);
-  await expect(page.getByText(DESCRICAO)).not.toBeVisible();
+  await expect(
+    page.getByRole('row').filter({ hasText: DESCRICAO })
+  ).not.toBeVisible({ timeout: 15000 });
 });

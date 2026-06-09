@@ -7,14 +7,12 @@ export class LoginPage {
   }
 
   async goto() {
-    await this.page.goto('https://app.avaliei.com.br/login');
-    await this.emailInput.waitFor({ state: 'visible' });
+    await this.page.goto('https://app.avaliei.com.br/login', { waitUntil: 'domcontentloaded' });
+    await this.emailInput.waitFor({ state: 'visible', timeout: 30000 });
   }
 
   async fillCredentials(email, password) {
-    await this.emailInput.click();
     await this.emailInput.fill(email);
-    await this.passwordInput.click();
     await this.passwordInput.fill(password);
   }
 

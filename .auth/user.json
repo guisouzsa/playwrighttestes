@@ -2,10 +2,10 @@
   "cookies": [
     {
       "name": "auth_token",
-      "value": "eyJpdiI6ImhDTWxsYXVUemFwRGxJYUM4R2Y5MXc9PSIsInZhbHVlIjoieFpBNTd5Vm1TV0lTRmRJS1FBZnJLVnlZbzRWOG1EY1h0TURpNy9Wa0tBNnVQY3V5dU5qZXlnRFZZUHk1SDhKbm14THRjQmtIVEltaGxuYUdrVFlJdGc9PSIsIm1hYyI6IjE0ZWE1Yjg4NzFkNzE4YTYzMTk5OGNiOGUwY2NmOTliNGNjMTdlYzY4NDZjZWEwNzI4Yzc5ZmVhNWQzMzI4MGEiLCJ0YWciOiIifQ%3D%3D",
+      "value": "eyJpdiI6IkdSd0ZaSU5EZGlkSFQ5cVl0Q2QvL2c9PSIsInZhbHVlIjoiYmgxWDQrSWFQNW9zbktKMlo1Z2dQOUoyVDBkVUpTekgzUFFwdktacXlYQ2M0T2hPaU4vaU1UY2JHNC9HR1BpMC9kUlhEdnh2VFpNTjdDanE0OHdNOEE9PSIsIm1hYyI6IjgwZDU3YTZkZDgyNWFkN2U3OTFkZGViYzQyZWU4MTAwZjNhN2M5YTNlOTI1MzU4NTNjMGJhNDYyNjcxYzBkZjMiLCJ0YWciOiIifQ%3D%3D",
       "domain": ".avaliei.com.br",
       "path": "/",
-      "expires": 1780964002.152786,
+      "expires": 1781066582.817854,
       "httpOnly": true,
       "secure": false,
       "sameSite": "Lax"

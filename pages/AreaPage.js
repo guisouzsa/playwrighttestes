@@ -8,29 +8,32 @@ export class AreaPage {
   }
 
   async criar(nome) {
+    await this.btnAdicionar.waitFor({ state: 'visible', timeout: 30000 }); // 👈
     await this.btnAdicionar.click();
     await this.inputNome.fill(nome);
     await this.btnSalvar.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
     await this.pesquisar(nome);
   }
 
   async pesquisar(nome) {
+    await this.inputPesquisa.clear();
     await this.inputPesquisa.fill(nome);
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async editar(novoNome) {
     await this.page.getByRole('button', { name: 'Editar', exact: true }).first().click();
     await this.inputNome.fill(novoNome);
     await this.btnSalvar.click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
   }
 
   async excluir(nome) {
     await this.pesquisar(nome);
     await this.page.getByRole('row').filter({ hasText: nome }).getByRole('button', { name: 'Excluir', exact: true }).click();
     await this.page.getByRole('button', { name: 'Excluir' }).click();
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('domcontentloaded');
+    await this.inputPesquisa.clear();
   }
 }

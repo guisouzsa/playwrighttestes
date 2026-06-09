@@ -19,5 +19,7 @@ test('CRUD de Área', async ({ page }) => {
   await expect(page.getByText(editado)).toBeVisible({ timeout: 15000 });
 
   await area.excluir(editado);
-  await expect(page.getByText(editado)).not.toBeVisible({ timeout: 15000 });
+  await expect(
+    page.getByRole('row').filter({ hasText: editado })
+  ).not.toBeVisible({ timeout: 15000 });
 });

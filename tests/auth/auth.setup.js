@@ -1,3 +1,4 @@
+// auth.setup.js
 import { test as setup } from '@playwright/test';
 import { LoginPage } from '../../pages/LoginPage.js';
 import { TotpPage } from '../../pages/TotpPage.js';
@@ -20,7 +21,7 @@ setup('autenticar usuário', async ({ page }) => {
   await totpPage.completeTotp(SECRET);
 
   await page.getByRole('navigation', { name: 'Main' })
-    .waitFor({ state: 'visible', timeout: 30000 });
+    .waitFor({ state: 'visible', timeout: 60000 });
 
   await page.context().storageState({ path: AUTH_FILE });
 });

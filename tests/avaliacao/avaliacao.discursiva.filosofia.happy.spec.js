@@ -9,11 +9,18 @@ test('CRUD Avaliação Discursiva - Filosofia', async ({ page }) => {
   const editado = `${nome}-editado`;
 
   await avaliacao.criarDiscursiva({ descricao: nome, turma, data: '26/06/2026' });
-  await expect(page.getByText(nome)).toBeVisible();
+  await expect(
+    page.getByRole('row').filter({ hasText: nome })
+  ).toBeVisible({ timeout: 15000 });
 
   await avaliacao.editar(nome, editado, '30/06/2026');
-  await expect(page.getByText(editado)).toBeVisible();
+  await avaliacao.pesquisar(editado);
+  await expect(
+    page.getByRole('row').filter({ hasText: editado })
+  ).toBeVisible({ timeout: 15000 });
 
   await avaliacao.excluir(editado);
-  await expect(page.getByText(editado)).not.toBeVisible();
+  await expect(
+    page.getByRole('row').filter({ hasText: editado })
+  ).not.toBeVisible({ timeout: 15000 });
 });
